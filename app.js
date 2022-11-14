@@ -28,9 +28,9 @@ const cardList = [
 
 cardList.sort(() => 0.5 - Math.random()); // randomize the cards :)
 
-const selectedCardNames = []; // check for matches
-const selectedCardIds = [];
-const successfulCards = []; // should be a pair and removed from deck
+let selectedCardNames = []; // check for matches
+let selectedCardIds = [];
+let successfulCards = []; // should be a pair and removed from deck
 let timeout;
 
 /**
@@ -77,11 +77,18 @@ function checkForMatch() {
     alert('Sorry. Try again please.');
     // reset the cards
     cardSpan1.classList.remove('selectedCardBgColor');
+    cardSpan1.addEventListener('click', flipCard);
+
     cardSpan2.classList.remove('selectedCardBgColor');
+    cardSpan2.addEventListener('click', flipCard);
+
     card1.isSelected = false;
     card2.isSelected = false;
   }
 
+  // Don't forget to reset the cards by clearing contents!
+  selectedCardIds = [];
+  selectedCardNames = [];
   clearTimeout(timeout);
 }
 
@@ -91,7 +98,6 @@ function checkForMatch() {
 function flipCard(e) {
   const span = e.target;
   const cardId = span.getAttribute('data-id');
-  span.removeEventListener('click', flipCard);
 
   const chosenCard = cardList[cardId];
   if (chosenCard.isSelected) {
@@ -105,5 +111,7 @@ function flipCard(e) {
 
   if (selectedCardNames.length === 2) {
     timeout = setTimeout(checkForMatch, 600);
+  } else {
+    console.log({ selectedCardNames });
   }
 }
